@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
+use Livewire\Attributes\Session;
 
 #[Title('Login Page')]
 class Login extends Component
@@ -15,7 +16,7 @@ class Login extends Component
      public $email;
      #[Validate]
      public $password;
-
+     public $adminName;
      public function rules(){
         return[
         'email' => 'required|email|max:250',
@@ -33,7 +34,7 @@ class Login extends Component
         if(Auth::attempt($credentials))
         {
             session()->flash('message', 'You have successfully logged in!');
-
+            $this->adminName = Auth::user()->name;
             return $this->redirectRoute('dashboard', navigate: true);
         }
 

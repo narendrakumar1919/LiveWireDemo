@@ -10,7 +10,7 @@
                 </div>
                 <div class="block-content">
                     <form wire:submit="update">
-                    @include('livewire.admin.category.form')
+                    @include('livewire.admin.product.form')
 
                     <div class="form-group row">
                         <div class="col-lg-9 ml-auto">

@@ -6,11 +6,11 @@
             <div class="block">
 
                 <div class="block-header block-header-default">
-                    <h3 class="block-title">Edit</h3>
+                    <h3 class="block-title">product</h3>
                 </div>
                 <div class="block-content">
-                    <form wire:submit="update">
-                    @include('livewire.admin.category.form')
+                    <form wire:submit="creates">
+                    @include('livewire.admin.product.form')
 
                     <div class="form-group row">
                         <div class="col-lg-9 ml-auto">
@@ -30,4 +30,3 @@
     </main>
 
 </div>
-

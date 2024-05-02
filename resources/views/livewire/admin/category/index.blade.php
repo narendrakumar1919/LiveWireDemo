@@ -14,7 +14,27 @@
             <div class="block">
                 <div class="block-header block-header-default">
                     <h3 class="block-title">Categories</h3>
-                    <a href="{{ route('category.create') }}" class="btn btn-primary" wire:navigate>Add Categories</a>
+
+                    @if(auth()->user()->hasPermissionTo('create categories'))
+                    {{-- <a href="{{ route('category.create') }}" class="btn btn-primary" wire:navigate>Add Categories</a> --}}
+                    <button wire:click="openModal" class="btn btn-primary">Add Categories</button>
+                    @endif
+
+                    @if($isOpen && auth()->user()->hasPermissionTo('create categories'))
+                    <div class="modal" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content" style="max-height: 530px; overflow-y: auto;">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Add Category</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeModal">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <livewire:admin.category.create />
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="block-header block-header-default">
@@ -42,7 +62,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($categories as $category)
-                                    <tr>
+                                    <tr wire:key="{{ $category->id }}">
                                         <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>{{ $category->description }}</td>
@@ -50,7 +70,8 @@
                                                 height="70px" width="70px"></td>
                                         <td><button wire:click="delete({{ $category->id }})"  wire:confirm="Are you sure you want to delete this post?"><i
                                             class="si si-trash"></i></button>
-                                            <a href="{{route('category.edit',$category->id)}}" wire:navigate>edit</a>
+                                            {{-- <a href="{{route('category.edit',$category->id)}}" wire:navigate>edit</a> --}}
+                                            <button wire:click="openEdit({{$category->id}})">edit</button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -76,6 +97,21 @@
 
                 <!-- END Page Content -->
             </div>
+            @if($isEdit && auth()->user()->hasPermissionTo('create categories'))
+            <div class="modal" tabindex="-1" role="dialog" style="display: block; background-color: rgba(0, 0, 0, 0.5);">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="max-height: 530px; overflow-y: auto;">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Add Category</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" wire:click="closeEdit">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <livewire:admin.category.edit :category="$categoryId" />
+                    </div>
+                </div>
+            </div>
+            @endif
     </main>
 
 </div>

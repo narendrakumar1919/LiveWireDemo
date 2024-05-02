@@ -18,9 +18,9 @@
                         <img class="img-avatar img-avatar32" src="{{ asset('assets/media/avatars/avatar15.jpg') }}"
                             alt="">
                     </a>
-                    @if (session('adminName'))
-                        <p class="align-middle link-effect text-primary-dark font-w600">{{ session('adminName') }}</p>
-                    @endif
+
+                        {{-- <p class="align-middle link-effect text-primary-dark font-w600">{{ $adminName }}</p> --}}
+
                 </div>
                 <!-- END User Info -->
             </div>
@@ -230,7 +230,7 @@
                                 class="sidebar-mini-hide">Category</span></a>
                     </li>
                     <li>
-                        <a class="{{request()->is('products')?'active':''}}" href=""><i class="fa fa-product-hunt"></i><span
+                        <a class="{{request()->is('*/product/*')?'active':''}}" href="{{route('product.index')}}" wire:navigate><i class="fa fa-product-hunt"></i><span
                                 class="sidebar-mini-hide">Product</span></a>
                     </li>
                 </ul>

@@ -10,8 +10,9 @@ use Livewire\WithFileUploads;
 
 class Edit extends Component
 {
-    use WithFileUploads;
 
+    use WithFileUploads;
+    protected $middleware = ['role:Admin'];
     public $category;
     #[Validate]
     public $name;
@@ -20,14 +21,16 @@ class Edit extends Component
     #[Validate]
     public $image;
     public $oldImage;
+    public $imagePreview;
 
     public function mount($category)
     {
-        // Fetch the category details from the database and populate the properties
+        if (!auth()->user()->hasRole('Admin')) {
+            abort(403, 'Unauthorized.');
+        }
         $this->category = Category::findOrFail($category);
         $this->name = $this->category->name;
         $this->description = $this->category->description;
-        // Set the initial value of the old image
         $this->oldImage = $this->category->image;
     }
 
@@ -41,24 +44,21 @@ class Edit extends Component
     {
         $this->validate();
 
-        // Update category details
         $this->category->update([
             'name' => $this->name,
             'description' => $this->description,
         ]);
 
-        // Check if a new image is uploaded
         if ($this->image) {
-            // Delete old image if exists
+            // $this->imagePreview = $this->image->temporaryUrl();
+
             if ($this->category->image) {
-                // Delete old image from storage
                 Storage::delete('public/images/' . $this->category->image);
             }
-            // Upload new image
+
             $imageName = time() . '-' . $this->image->getClientOriginalName();
             $this->image->storeAs('public/images', $imageName);
 
-            // Update category with new image
             $this->category->update(['image' => $imageName]);
         }
 

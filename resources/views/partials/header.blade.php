@@ -117,11 +117,11 @@
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fa fa-user d-sm-none"></i>
                     </span>
-                    @if (session('adminName'))
+
                         <span class="d-none d-sm-inline-block">
-                            {{ session('adminName') }}
+                            {{ auth()->user()->name }}
                         </span>
-                    @endif
+
                     <i class="fa fa-angle-down ml-5"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right min-width-200"
@@ -142,12 +142,8 @@
                     <!-- END Side Overlay -->
 
                     <div class="dropdown-divider"></div>
-                    <form action="" method="get">
-                        @csrf
 
-                        <button type="submit" class="dropdown-item" ><i class="si si-logout mr-5"></i> Logout</button>
-                    </form>
-
+                    <livewire:admin.auth.logout />
 
                 </div>
             </div>
